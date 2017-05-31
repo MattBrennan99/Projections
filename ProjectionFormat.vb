@@ -89,6 +89,8 @@ Public Module ProjectionFormat
         'turn off calculation until everything is setup
         Application.Calculation = XlCalculation.xlCalculationManual
 
+        UnHighlightRows()
+
         monthToQuarter("Count")
         makeTriangleSheets("Count")
 
@@ -97,7 +99,6 @@ Public Module ProjectionFormat
 
         monthToQuarter("Incurred")
         makeTriangleSheets("Incurred")
-
 
         'wait...if the ata data will be either the actual data or ata data, do we really have to do this part?
         'yes we do, because we need the macro to produce quarterly data triangle
@@ -117,6 +118,8 @@ Public Module ProjectionFormat
         wkstExpLoss.Activate()
         graphsUpdate("Exp Loss")
         graphsUpdate("Review Template")
+
+        HighlightRows()
 
         'remove closure model monthly spread first. need to think about quarterly spread...
         wkstClsMod.Range("clos_mod_spr_monthly").ClearContents()
@@ -811,10 +814,10 @@ Public Module ProjectionFormat
         Next
 
         'assigns the newly created column of cells to review template
-        CType(wkstReviewTemplate.Cells(9, 5), Range).Value = CType(wkstReviewTemplate.Cells(9, 6), Range).Value
         For i As Integer = 0 To 5
             'only update the initial ATA column when flag is set to 0
             If flag = 0 Then
+                CType(wkstReviewTemplate.Cells(9, 5), Range).Value = CType(wkstReviewTemplate.Cells(9, 6), Range).Value
                 CType(wkstReviewTemplate.Cells(10 + i, 5), Range).Value = selATA(i, 0)
                 CType(wkstReviewTemplate.Cells(16, 5), Range).Value = CType(wkstReviewTemplate.Cells(16, 6), Range).Value
             End If
@@ -958,5 +961,13 @@ Public Module ProjectionFormat
         End If
         Return Math.Floor(num / multiple) * multiple
     End Function
+
+    Public Sub HighlightRows()
+        Application.Run("Colorize")
+    End Sub
+
+    Public Sub UnHighlightRows()
+        Application.Run("DeColorize")
+    End Sub
 
 End Module

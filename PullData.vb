@@ -225,6 +225,7 @@ Public Module PullData
         getTrianglesFromSqlSvr()    'update Triangles
         getClsdAvg()                'update closed average
         runGetCurrentData()         'update EPEE, GU Counts, Volatility
+        runVBUpdateIDinExcel()        'Update ID in Excel - not necessary, but will be easily accessible
     End Sub
     Public Sub getTrianglesFromSqlSvr()
         'Chr(39) is the character values for single quote, Chr(32) is the character values for space
@@ -358,11 +359,11 @@ Public Module PullData
 
         'Cycle is handled differently.  Closed average does not have an "M" RS
         If CType(wkstControl.Range("risk").Value, String) = "M" Then
-            urlString = "http://frws3313.geico.corp.net/sas-cgi/broker.exe?_service=kpprd&_debug=0&_program=pri_pgm.reportdriver1.sas&prog=rsvclosedaverage&report=view1" &
+            urlString = "http://sasinet.geico.net/sas-cgi/broker.exe?_service=kpprd&_debug=0&_program=pri_pgm.reportdriver1.sas&prog=rsvclosedaverage&report=view1" &
                 "&years=*&ratestructure=*&risksector=*&company=**&lob=CY" & state & coverage & "&covstat=****&atlas=*"
             '"&years=*&ratestructure=*" & risk & company & lob & state & coverage & "&covstat=****&atlas=*"
         Else
-            urlString = "http://frws3313.geico.corp.net/sas-cgi/broker.exe?_service=kpprd&_debug=0&_program=pri_pgm.reportdriver1.sas&prog=rsvclosedaverage&report=view1" &
+            urlString = "http://sasinet.geico.net/sas-cgi/broker.exe?_service=kpprd&_debug=0&_program=pri_pgm.reportdriver1.sas&prog=rsvclosedaverage&report=view1" &
                 "&years=*&ratestructure=*" & risk & company & lob & state & coverage & "&covstat=****&atlas=*"
         End If
 
@@ -406,6 +407,10 @@ Public Module PullData
     Public Sub getClsModVBA()
         Application.Run("getClsModData")
         Application.Run("getClsModSpr")
+    End Sub
+
+    Public Sub runVBUpdateIDinExcel()
+        Application.Run("UpdateIDInExcel")
     End Sub
 
     Public Sub getGUIBNRCount()
